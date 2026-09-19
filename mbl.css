@@ -1,0 +1,116 @@
+/* ================= EXTRA: MENU + MBL ================= */
+:root{
+  --azul:      #2952c4;
+  --azul-luz:  #7fa8ff;
+  --azul-som:  #16234f;
+  --oro:       #e0b84a;
+  --oro-luz:   #ffe9a8;
+}
+
+/* ---------- MENU PRINCIPAL ---------- */
+#pantalla-menu{
+  z-index:50; align-items:center; justify-content:center;
+  padding:22px; text-align:center; gap:22px;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 6px),
+    radial-gradient(700px 500px at 50% 30%, rgba(127,168,255,.18), transparent 70%),
+    linear-gradient(180deg, #171233 0%, #241132 55%, #180b22 100%);
+}
+.menu-contenido{ display:flex; flex-direction:column; align-items:center; gap:18px; max-width:640px; }
+.menu-titulo{ font-family:var(--pixel); font-size:clamp(18px,4.6vw,30px); color:var(--crema); text-shadow:3px 3px 0 var(--bloque-bor); }
+.menu-sub{ font-family:var(--texto); font-size:19px; color:var(--rosa-claro); }
+.tarjetas{ display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+.tarjeta-juego{
+  width:210px; padding:16px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:10px;
+  background:#34163f; border:4px solid var(--bloque-bor);
+  box-shadow: inset 3px 3px 0 rgba(255,255,255,.14), inset -3px -3px 0 rgba(0,0,0,.4), 0 6px 0 #1d0c28;
+  transition: transform .1s steps(2);
+}
+.tarjeta-juego:hover{ transform:translateY(-4px); }
+.tarjeta-juego img{ width:64px; height:64px; image-rendering:pixelated; border:3px solid var(--bloque-bor); background:#0d1224; }
+.tarjeta-juego h3{ font-family:var(--pixel); font-size:12px; color:var(--miel); }
+.tarjeta-juego p{ font-family:var(--texto); font-size:15px; color:var(--crema); opacity:.85; }
+.firma{ font-family:var(--texto); font-size:15px; color:var(--rosa-claro); margin-top:6px; }
+
+/* ---------- PANTALLA MBL ---------- */
+#pantalla-mbl{ z-index:45; flex-direction:column; align-items:center; justify-content:flex-start; background:linear-gradient(180deg,#0b1030 0%, #1a1650 55%, #22123f 100%); overflow:hidden; }
+#hud-mbl{ width:100%; display:flex; align-items:center; justify-content:space-between; padding:8px 14px; position:relative; z-index:5; }
+#vidas-mbl{ font-size:18px; letter-spacing:2px; min-width:110px; }
+#meta-mbl{ font-family:var(--pixel); font-size:11px; color:var(--oro-luz); }
+#btn-menu-mbl{ font-size:10px; padding:8px 12px; }
+
+#mbl-viewport{
+  position:relative; margin-top:8px;
+  width:min(100%, 900px, max(280px, calc((100vh - 205px) * 1.6)));
+  width:min(100%, 900px, max(280px, calc((100dvh - 205px) * 1.6)));
+  aspect-ratio:1.6 / 1; overflow:hidden;
+  border:4px solid var(--bloque-bor); box-shadow:0 0 0 4px #0c0a1c, 0 0 40px rgba(127,168,255,.18); background:#0a1330;
+}
+#mbl-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; image-rendering:pixelated; }
+
+/* Cartel de zona */
+#mbl-banner{ position:absolute; left:0; right:0; top:14%; text-align:center; pointer-events:none; opacity:0; z-index:4; text-shadow:2px 2px 0 #10082a; }
+#mbl-banner small{ display:block; font-family:var(--texto); font-size:clamp(13px,2.6vw,20px); color:var(--rosa-claro); letter-spacing:2px; }
+#mbl-banner strong{ display:block; font-family:var(--pixel); font-weight:400; font-size:clamp(11px,2.8vw,20px); color:var(--oro-luz); margin-top:4px; }
+#mbl-banner.mostrar{ animation:bannerZona 3.2s steps(16,end) forwards; }
+@keyframes bannerZona{ 0%{opacity:0; transform:translateY(-8px)} 12%{opacity:1; transform:none} 78%{opacity:1} 100%{opacity:0} }
+
+/* Barra del jefe */
+#mbl-jefe{ position:absolute; left:50%; top:9px; transform:translateX(-50%); width:56%; display:none; z-index:4; text-align:center; }
+#mbl-jefe.activo{ display:block; }
+#mbl-jefe span{ font-family:var(--pixel); font-size:clamp(7px,1.5vw,10px); color:var(--oro-luz); text-shadow:2px 2px 0 #10082a; }
+#mbl-jefe .barra{ margin-top:5px; height:10px; background:#1a0f2a; border:3px solid #10082a; box-shadow:0 0 0 2px var(--oro); }
+#mbl-jefe .barra i{ display:block; height:100%; width:100%; background:linear-gradient(180deg,#ff8aa8,#c4204f); transition:width .2s steps(4,end); }
+
+/* Dialogo de la escena final */
+#mbl-dialogo{ position:absolute; left:4%; right:4%; top:10%; display:none; z-index:5; padding:12px 16px 14px; background:rgba(20,10,44,.93); border:4px solid var(--oro); box-shadow:inset 3px 3px 0 rgba(255,255,255,.12), 0 5px 0 #0c0a1c; }
+#mbl-dialogo.activo{ display:block; }
+#mbl-dialogo .quien{ font-family:var(--pixel); font-size:clamp(8px,1.9vw,12px); color:var(--oro-luz); }
+#mbl-dialogo.odette .quien{ color:var(--rosa); }
+#mbl-dialogo .texto{ margin-top:6px; font-family:var(--texto); font-size:clamp(16px,3vw,24px); line-height:1.15; color:var(--crema); min-height:2.3em; }
+#mbl-dialogo{ padding:10px 16px 12px; }
+#mbl-dialogo .sig{ position:absolute; right:12px; bottom:6px; font-size:12px; color:var(--oro); animation:parpadeo .8s steps(2,end) infinite; }
+@keyframes parpadeo{ 50%{opacity:0} }
+
+#mbl-aviso{ position:absolute; top:auto; bottom:6%; left:50%; transform:translateX(-50%); font-family:var(--pixel); font-size:clamp(8px,1.9vw,12px); line-height:1.5; color:var(--oro-luz); text-align:center; opacity:0; transition:opacity .3s; pointer-events:none; z-index:6; text-shadow:2px 2px 0 #10082a; background:rgba(16,8,42,.65); padding:6px 10px; white-space:nowrap; }
+#mbl-aviso.visible{ opacity:1; }
+
+#controles-mbl{ display:flex; width:100%; max-width:900px; justify-content:space-between; align-items:center; padding:12px 12px; }
+.mbl-btn{
+  font-family:var(--pixel); color:#12203f; background:var(--azul-luz); border:4px solid var(--azul-som);
+  box-shadow: inset 3px 3px 0 #cfe0ff, inset -3px -3px 0 var(--azul-som), 0 5px 0 #0c1230;
+  width:60px; height:60px; font-size:20px; display:flex; align-items:center; justify-content:center; touch-action:manipulation; user-select:none; -webkit-user-select:none;
+}
+.mbl-btn:active{ transform:translateY(4px); box-shadow:none; }
+.mbl-btn.ataque{ background:var(--oro); box-shadow: inset 3px 3px 0 var(--oro-luz), inset -3px -3px 0 #7a5a12, 0 5px 0 #4a3608; }
+#mbl-mover{ display:flex; gap:12px; }
+#mbl-acciones{ display:flex; gap:12px; }
+
+/* Celular vertical: escena más alta (se recortan un poco los lados) y botones abajo */
+@media (orientation:portrait) and (max-width:700px){
+  #mbl-viewport{ width:100%; max-width:none; aspect-ratio:1.12 / 1; border-left:0; border-right:0; box-shadow:0 0 0 0 transparent, 0 0 40px rgba(127,168,255,.18); }
+  #mbl-canvas{ object-fit:cover; object-position:44% 50%; }
+  #controles-mbl{ margin-top:auto; padding:0 14px max(26px, env(safe-area-inset-bottom)); }
+  .mbl-btn{ width:64px; height:64px; }
+  #mbl-dialogo{ top:6%; }
+}
+
+/* Celular horizontal: los botones flotan sobre el juego */
+@media (orientation:landscape) and (max-height:520px){
+  #hud-mbl{ padding:4px 12px; }
+  #mbl-viewport{ margin-top:4px; width:min(100%, 900px, calc((100dvh - 52px) * 1.6)); }
+  #controles-mbl{ position:absolute; left:0; right:0; bottom:10px; padding:0 18px; max-width:none; pointer-events:none; z-index:8; }
+  .mbl-btn{ pointer-events:auto; opacity:.82; width:54px; height:54px; }
+}
+
+/* ---------- VICTORIA MBL ---------- */
+#pantalla-mbl-victoria{ z-index:60; align-items:center; justify-content:center; padding:20px; text-align:center; background:radial-gradient(700px 500px at 50% 30%, rgba(224,184,74,.18), transparent 70%), linear-gradient(180deg,#171233,#180b22); }
+#pantalla-mbl-victoria img{ width:150px; image-rendering:pixelated; margin-bottom:10px; filter:drop-shadow(0 0 16px rgba(255,255,255,.55)); }
+.victoria-titulo{ font-family:var(--pixel); font-size:clamp(16px,4vw,24px); color:var(--oro-luz); text-shadow:3px 3px 0 var(--bloque-bor); margin-bottom:10px; }
+.victoria-rosas{ font-family:var(--texto); font-size:22px; color:var(--rosa-claro); margin-bottom:6px; }
+.victoria-frase{ font-family:var(--texto); font-size:20px; color:var(--crema); max-width:520px; margin-bottom:6px; }
+.victoria-botones{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:14px; }
+
+@media (max-width:480px){
+  .mbl-btn{ width:52px; height:52px; font-size:17px; }
+}

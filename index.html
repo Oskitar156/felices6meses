@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Laberinto de Nuestros Recuerdos</title>
+
+<!-- Fuentes pixeladas (opcionales: si no hay internet, usa una monoespaciada) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="mbl.css">
+</head>
+<body>
+
+<!-- Partículas de fondo (corazones pixelados) -->
+<div id="capa-particulas" aria-hidden="true"></div>
+
+<!-- ============ PANTALLA DE INICIO ============ -->
+<div id="pantalla-inicio" class="pantalla" style="display:none!important" aria-hidden="true"></div>
+
+<!-- ============ JUEGO ============ -->
+<section id="pantalla-menu" class="pantalla activa visible">
+  <div class="menu-contenido">
+    <h1 class="menu-titulo">ELIGE TU AVENTURA</h1>
+    <p class="menu-sub">◆ dos juegos hechos para ti ◆</p>
+    <div class="tarjetas">
+      <div class="tarjeta-juego" id="tarjeta-bee" role="button" tabindex="0">
+        <img src="images/personaje-pixel.png" alt="Bebé Abejita">
+        <h3>BEBÉ ABEJITA</h3>
+        <p>Encuentra nuestros 6 recuerdos en el laberinto</p>
+        <button class="btn-pixel" type="button" style="font-size:11px;padding:10px 18px;">START</button>
+      </div>
+      <div class="tarjeta-juego" id="tarjeta-mbl" role="button" tabindex="0">
+        <img src="images/icon-lancelot.png" alt="MBL">
+        <h3>MBL</h3>
+        <p>Cruza el bosque y las cascadas hasta el castillo de Odette</p>
+        <button class="btn-pixel" type="button" style="font-size:11px;padding:10px 18px;">START</button>
+      </div>
+    </div>
+    <p class="firma">Con mucho amor, de tu fiel amado Alejito ♥</p>
+  </div>
+</section>
+
+<main id="pantalla-juego" class="pantalla">
+
+  <!-- HUD -->
+  <header id="hud" class="panel-pixel">
+    <div class="hud-marcador">
+      <span class="hud-corazon">♥</span>
+      <span id="contador" class="hud-contador">0 / 6</span>
+    </div>
+    <p id="hud-objetivo" class="hud-objetivo">Encuentra nuestros 6 recuerdos</p>
+    <button id="btn-controles" class="btn-controles" type="button">CONTROLES</button>
+  </header>
+
+  <!-- Escenario escalable -->
+  <div id="escenario">
+    <div id="tablero">
+      <div id="capa-paredes"></div>
+      <div id="capa-cartas"></div>
+      <div id="salida" class="salida bloqueada"><span class="salida-icono">🔒</span></div>
+      <img id="personaje" src="images/personaje-pixel.png" alt="Personaje">
+    </div>
+  </div>
+
+  <!-- Controles táctiles -->
+  <nav id="dpad" aria-label="Controles">
+    <button class="dpad-btn arriba"    data-dir="arriba"    type="button" aria-label="Arriba">▲</button>
+    <button class="dpad-btn izquierda" data-dir="izquierda" type="button" aria-label="Izquierda">◀</button>
+    <button class="dpad-btn abajo"     data-dir="abajo"     type="button" aria-label="Abajo">▼</button>
+    <button class="dpad-btn derecha"   data-dir="derecha"   type="button" aria-label="Derecha">▶</button>
+  </nav>
+
+  <!-- Aviso que aparece al abrirse la salida -->
+  <div id="aviso" class="aviso panel-pixel"></div>
+</main>
+
+<!-- ============ MODAL DE CARTA ============ -->
+<div id="modal-carta" class="modal" role="dialog" aria-modal="true">
+  <div class="carta-abierta panel-pixel">
+    <div class="carta-sello">♥</div>
+    <p id="carta-fecha" class="carta-fecha"></p>
+    <h2 id="carta-titulo" class="carta-titulo"></h2>
+    <img id="carta-imagen" class="carta-imagen" alt="">
+    <p id="carta-mensaje" class="carta-mensaje"></p>
+    <p id="carta-frase" class="carta-frase"></p>
+    <button id="btn-cerrar-carta" class="btn-pixel" type="button">GUARDAR</button>
+  </div>
+</div>
+
+<!-- ============ PANTALLA FINAL ============ -->
+<section id="pantalla-final" class="pantalla">
+  <div id="confeti" aria-hidden="true"></div>
+  <div class="final-contenido">
+    <h2 class="final-titulo">♥ FELICES 6 MESES ♥</h2>
+    <p class="final-subtitulo">Amor de la amistad para la mejor novia del mundo</p>
+    <p class="firma">Con mucho amor, de tu fiel amado Alejito ♥</p>
+    <div class="victoria-botones">
+      <button id="btn-reiniciar" class="btn-pixel btn-reiniciar" type="button">JUGAR OTRA VEZ</button>
+      <button id="btn-volver-menu-bee" class="btn-pixel" type="button">VOLVER AL MENÚ</button>
+    </div>
+  </div>
+</section>
+
+<main id="pantalla-mbl" class="pantalla">
+  <header id="hud-mbl" class="panel-pixel">
+    <span id="vidas-mbl">❤️❤️❤️❤️❤️</span>
+    <span id="meta-mbl">🌹 0 / 12</span>
+    <button id="btn-menu-mbl" class="btn-pixel" type="button">MENÚ</button>
+  </header>
+
+  <div id="mbl-viewport">
+    <canvas id="mbl-canvas" width="960" height="600" aria-label="Juego de Lancelot"></canvas>
+    <div id="mbl-banner"><small></small><strong></strong></div>
+    <div id="mbl-jefe"><span>CAPITÁN DE LA GUARDIA</span><div class="barra"><i></i></div></div>
+    <div id="mbl-dialogo"><b class="quien"></b><p class="texto"></p><span class="sig">▼</span></div>
+    <div id="mbl-aviso"></div>
+  </div>
+
+  <nav id="controles-mbl">
+    <div id="mbl-mover">
+      <button class="mbl-btn" id="mbl-izq" type="button" aria-label="Izquierda">◀</button>
+      <button class="mbl-btn" id="mbl-der" type="button" aria-label="Derecha">▶</button>
+    </div>
+    <div id="mbl-acciones">
+      <button class="mbl-btn ataque" id="mbl-atacar" type="button" aria-label="Atacar">⚔</button>
+      <button class="mbl-btn" id="mbl-saltar" type="button" aria-label="Saltar">⤴</button>
+    </div>
+  </nav>
+</main>
+
+<section id="pantalla-mbl-victoria" class="pantalla">
+  <div class="menu-contenido">
+    <img src="images/sprite-odette.png" alt="Odette">
+    <h2 class="victoria-titulo">♥ LA ENCONTRASTE ♥</h2>
+    <p class="victoria-rosas" id="victoria-rosas"></p>
+    <p class="victoria-frase">Yo haría todo por ti, mi Odette :3 mua</p>
+    <p class="firma">Con mucho amor, de tu fiel amado Alejito ♥</p>
+    <div class="victoria-botones">
+      <button class="btn-pixel" id="btn-mbl-reintentar" type="button">JUGAR OTRA VEZ</button>
+      <button class="btn-pixel" id="btn-mbl-menu2" type="button">VOLVER AL MENÚ</button>
+    </div>
+  </div>
+</section>
+
+
+<script src="script.js"></script>
+<script src="menu.js"></script>
+<script src="mbl.js"></script>
+</body>
+</html>
